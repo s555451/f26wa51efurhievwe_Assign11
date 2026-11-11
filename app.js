@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -18,6 +19,7 @@ var pickRouter = require('./routes/pick');
 var resourceRouter = require('./routes/resource');
 var Mydata = require('./models/mydata');
 
+
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/resource', resourceRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/mydata', mydataRouter);
@@ -40,8 +43,6 @@ app.get('/resource', (req, res) => {
     description: 'API for reading and creating Mydata documents'
   });
 });
-
-app.use('/resource', resourceRouter);
 
 app.get('/resource/mydatas', async (req, res) => {
   try {

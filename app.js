@@ -32,7 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/mydata', mydataRouter);
-app.use('/resource', resourceRouter);
 // Direct fallback for Assignment 11 resource API
 app.get('/resource', (req, res) => {
   res.json({
@@ -42,6 +41,8 @@ app.get('/resource', (req, res) => {
   });
 });
 
+app.use('/resource', resourceRouter);
+
 app.get('/resource/mydatas', async (req, res) => {
   try {
     const documents = await Mydata.find();
@@ -50,6 +51,7 @@ app.get('/resource/mydatas', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 app.use('/computation', computationRouter);
 app.use('/game', gameRouter);
 app.use('/grid', gridRouter);

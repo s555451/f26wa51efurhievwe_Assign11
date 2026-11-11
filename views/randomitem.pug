@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  - let image_names = ["img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg", "img5.jpg"]
+  div(style="display: flex; gap: 10px;")
+    - for(let i=0; i<3; i++) {
+      - let rand = Math.floor(Math.random() * 5);
+      - let imgName = image_names[rand];
+      img(src=`/images/${imgName}`, alt=imgName, height="200", width="200", style="object-fit: cover;")
+    - }

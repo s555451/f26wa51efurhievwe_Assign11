@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  - let results = [{title: "Chess", genre: "Strategy", rating: 5}, {title: "Tetris", genre: "Puzzle", rating: 4}, {title: "Checkers", genre: "Board", rating: 3}]
+  div.container-fluid
+    div.row
+      each item, index in results
+        div.col-sm-2(style="border:1px solid black; margin:5px; padding:10px;", onclick=`buy(${index})`)
+          p Title: #{item.title}
+          p Genre: #{item.genre}
+          p Rating: #{item.rating}
+  br
+  a(href="/") Back to Home
+
+  script.
+    function buy(index) {
+      alert(`You purchased item ${index}`);
+    }

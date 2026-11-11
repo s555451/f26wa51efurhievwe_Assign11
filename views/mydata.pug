@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1= title
+  p This page displays records stored in the MongoDB Atlas collection.
+  p
+    a(href='/mydata/create') Create a New Record
+    |  | 
+    a(href='/resource') View API Specification
+    |  | 
+    a(href='/resource/mydatas') View Collection JSON
+  if message
+    p(style='color: green; font-weight: bold')= message
+  if items.length
+    table(border='1', cellpadding='8', cellspacing='0')
+      thead
+        tr
+          th Name
+          th Category
+          th Description
+      tbody
+        each item in items
+          tr
+            td= item.name
+            td= item.category
+            td= item.description
+  else
+    p No records found. Add a new record.

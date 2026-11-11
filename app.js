@@ -33,6 +33,23 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/mydata', mydataRouter);
 app.use('/resource', resourceRouter);
+// Direct fallback for Assignment 11 resource API
+app.get('/resource', (req, res) => {
+  res.json({
+    title: 'Assignment 11 Mydata API',
+    version: '1.0.0',
+    description: 'API for reading and creating Mydata documents'
+  });
+});
+
+app.get('/resource/mydatas', async (req, res) => {
+  try {
+    const documents = await Mydata.find();
+    res.json(documents);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 app.use('/computation', computationRouter);
 app.use('/game', gameRouter);
 app.use('/grid', gridRouter);

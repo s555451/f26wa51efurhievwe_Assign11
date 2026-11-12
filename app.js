@@ -31,46 +31,47 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Assignment 11 API
 app.use('/resource', resourceRouter);
+
+// Existing application routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/mydata', mydataRouter);
-// Direct fallback for Assignment 11 resource API
-app.get('/resource', (req, res) => {
-  res.json({
-    title: 'Assignment 11 Mydata API',
-    version: '1.0.0',
-    description: 'API for reading and creating Mydata documents'
-  });
-});
 
-app.get('/resource/mydatas', async (req, res) => {
-  try {
-    const documents = await Mydata.find();
-    res.json(documents);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 app.use('/computation', computationRouter);
 app.use('/game', gameRouter);
 app.use('/grid', gridRouter);
 app.use('/selector', pickRouter);
 
-// Connect to MongoDB Atlas. Set MONGODB_URI in Render Environment and local .env.
+// Connect to MongoDB Atlas
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(async function () {
       console.log('Connected to MongoDB Atlas');
-      // Add the three starter records once, so the Show All page has data.
+
       const count = await Mydata.countDocuments();
+
       if (count === 0) {
         await Mydata.insertMany([
-          { name: 'Keanu Reeves', category: 'Favorite Actor', description: 'I admire his acting and humility.' },
-          { name: 'Web Development', category: 'Technology', description: 'I enjoy building web applications.' },
-          { name: 'MongoDB Atlas', category: 'Database', description: 'I am learning to store and retrieve data with MongoDB.' }
+          {
+            name: 'Keanu Reeves',
+            category: 'Favorite Actor',
+            description: 'I admire his acting and humility.'
+          },
+          {
+            name: 'Web Development',
+            category: 'Technology',
+            description: 'I enjoy building web applications.'
+          },
+          {
+            name: 'MongoDB Atlas',
+            category: 'Database',
+            description: 'I am learning to store and retrieve data with MongoDB.'
+          }
         ]);
+
         console.log('Inserted three starter records');
       }
     })
@@ -81,12 +82,13 @@ if (process.env.MONGODB_URI) {
   console.warn('MONGODB_URI is not set. Add it to your .env file or Render environment variables.');
 }
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+// 404 handler
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-app.use(function(err, req, res, next) {
+// Error handler
+app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
